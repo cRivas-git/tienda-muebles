@@ -5,13 +5,16 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "node --watch --env-file=.env src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "secret": "node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "express": "^5.3.0"
+    "bcrypt": "^6.0.0",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3"
   }
 }
