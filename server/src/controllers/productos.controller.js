@@ -21,7 +21,7 @@ export function listar(req, res){
 
 export function obtenerPorId(req, res){
     const producto = Producto.obtenerPorId(req.params.id);
-    if(!producto){
+    if(!producto || (req.query.estado === 'ACTIVO' && producto.estado !== 'ACTIVO')){
         return res.status(404).json({ msg: 'Producto no existe'});
     }
     res.json(producto);
@@ -52,6 +52,41 @@ export function crear(req, res){
 
     res.status(201).json(producto);
 
+}
+
+export function actualizarPorId(req, res){
+    const { nombre, descripcion, precio } = req.body ?? {};
+
+    const errores = [];
+
+    if (typeof nombre !== 'string' || nombre.trim() === '') {
+        errores.push({ campo: 'nombre', error: 'Nombre del producto es requerido' });
+    }
+
+    if (typeof descripcion !== 'string' || descripcion.trim() === '') {
+        errores.push({ campo: 'descripcion', error: 'Descripción del producto es requerido' });
+    }
+
+    if (!Number.isInteger(precio) || precio < 0) {
+        errores.push({ campo: 'precio', error: 'Precio invalido, debe ser >= 0' });
+    }
+
+    if (errores.length > 0){
+        return res.status(400).json({errores});
+    }
+
+    const producto = Producto.actualizarPorId({
+        id: req.params.id,
+        nombre: nombre.trim(),
+        descripcion: descripcion.trim(),
+        precio
+    });
+
+    if(!producto){
+        return res.status(404).json({ msg: 'Producto no existe' });
+    }
+
+    res.json(producto);
 }
 
 export function cambiarEstadoPorId(req, res){

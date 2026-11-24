@@ -4,6 +4,7 @@ const findAll = db.prepare('SELECT * FROM productos');
 const findByEstado = db.prepare('SELECT * FROM productos WHERE estado = ?');
 const findById = db.prepare('SELECT * FROM productos WHERE id = ?');
 const insert = db.prepare('INSERT INTO productos(nombre, descripcion, precio) VALUES (?, ?, ?)');
+const updateById = db.prepare('UPDATE productos SET nombre = ?, descripcion = ?, precio = ? WHERE id = ?');
 const updateEstadoById = db.prepare('UPDATE productos SET estado = ? WHERE id = ?');
 const deleteById = db.prepare('DELETE FROM productos WHERE id = ?');
 
@@ -22,6 +23,11 @@ export function obtenerPorId(id){
 export function crear({nombre, descripcion,  precio}){
     const {lastInsertRowid} = insert.run(nombre, descripcion, precio);
     return obtenerPorId(lastInsertRowid) ;
+}
+
+export function actualizarPorId({nombre, descripcion, precio, id}){
+    const { changes } = updateById.run(nombre, descripcion, precio, id);
+    return changes > 0 ? obtenerPorId(id) : null;
 }
 
 export function cambiarEstadoPorId(id, estado){

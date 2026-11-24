@@ -1,12 +1,9 @@
 import jwt from 'jsonwebtoken';
 
 export function verificarToken(req, res, next) {
-    //req.headers.authorization viene 'Bearer adasdsadstoken' con split los separa y los asigna a los correspondientes tipo: Bearer y token: asdsasdatoken
-    const [tipo, token] = (req.headers.authorization ?? '').split(' ');
 
-    if(tipo !== 'Bearer' || !token){
-        return res.status(401).json({ msg: 'Token requerido'})
-    }
+    const token = req.cookies.token;
+    if(!token) return res.status(401).json({msg: 'Token requerido'});
 
     try{
         req.usuario = jwt.verify(token, process.env.JWT_SECRET);
