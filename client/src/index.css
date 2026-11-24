@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Colores propios: se usan como bg-botella, text-tinta, border-linea, etc. */
+@theme {
+  --color-tinta: #1b2320;
+  --color-botella: #1e4035;
+  --color-mostaza: #dba520;
+  --color-lino: #eef0ea;
+  --color-linea: #d5dad2;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-tinta antialiased;
+  }
+
+  h1 {
+    @apply text-3xl font-bold tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-botella;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-block cursor-pointer rounded-md bg-botella px-4 py-2 text-center font-medium text-white hover:bg-tinta disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-secundario {
+    @apply inline-block cursor-pointer rounded-md border border-linea px-3 py-1.5 text-sm font-medium hover:bg-lino disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .etiqueta {
+    @apply flex flex-col gap-1 text-sm font-medium;
+  }
+
+  .campo {
+    @apply rounded-md border border-tinta/40 px-3 py-2 text-base font-normal;
+  }
+
+  .mensaje-error {
+    @apply rounded-md bg-red-50 px-3 py-2 text-sm text-red-800;
+  }
+}
